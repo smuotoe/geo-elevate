@@ -26,11 +26,17 @@ apiClient.interceptors.request.use(
 apiClient.interceptors.response.use(
     (response) => response,
     (error) => {
-        if (error.response?.status === 401) {
-            // Token expired or invalid
+        const isAuthRequest = error.config?.url?.includes('/auth/login') || error.config?.url?.includes('/auth/signup');
+
+        if (error.response?.status === 401 && !isAuthRequest) {
+            // Token expired or invalid (only for non-auth requests)
             localStorage.removeItem('auth_token');
             localStorage.removeItem('user');
-            window.location.href = '/';
+            // Use window.location.reload() or redirect to clear state completely
+            // But checking if we are already at root to avoid loops
+            if (window.location.pathname !== '/') {
+                window.location.href = '/';
+            }
         }
         return Promise.reject(error);
     }
