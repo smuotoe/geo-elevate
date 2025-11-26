@@ -28,7 +28,7 @@ dist-ssr
 backend/.env
 
 # Data and volumes
-data/
+/data/
 *.db
 *.db-shm
 *.db-wal
