@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { WelcomeScreen } from './screens/WelcomeScreen';
 import { LoginScreen } from './screens/LoginScreen';
@@ -49,15 +49,18 @@ function AppContent() {
     setCurrentScreen('home');
   };
 
-  // Show welcome screen if not authenticated and not guest
-  if (!isLoading && !isAuthenticated && !isGuest && currentScreen !== 'welcome' && currentScreen !== 'login' && currentScreen !== 'signup') {
-    setCurrentScreen('welcome');
-  }
+  // Handle authentication redirects
+  useEffect(() => {
+    // Redirect to home after authentication
+    if ((isAuthenticated || isGuest) && (currentScreen === 'welcome' || currentScreen === 'login' || currentScreen === 'signup')) {
+      setCurrentScreen('home');
+    }
 
-  // Redirect to home after authentication
-  if ((isAuthenticated || isGuest) && (currentScreen === 'welcome' || currentScreen === 'login' || currentScreen === 'signup')) {
-    setCurrentScreen('home');
-  }
+    // Show welcome screen if not authenticated and not guest
+    if (!isLoading && !isAuthenticated && !isGuest && currentScreen !== 'welcome' && currentScreen !== 'login' && currentScreen !== 'signup') {
+      setCurrentScreen('welcome');
+    }
+  }, [isAuthenticated, isGuest, isLoading, currentScreen]);
 
   if (isLoading) {
     return (
