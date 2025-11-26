@@ -1,0 +1,18 @@
+@import "tailwindcss";
+@config "../tailwind.config.js";
+
+@layer base {
+  body {
+    @apply bg-elevate-bg text-elevate-text antialiased dark:bg-elevate-bg-dark dark:text-elevate-text-dark transition-colors duration-200;
+  }
+}
+
+/* Custom utilities if needed */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
