@@ -22,6 +22,7 @@ function AppContent() {
   const [lastScore, setLastScore] = useState(0);
   const [totalQuestions, setTotalQuestions] = useState(0);
   const [questionResults, setQuestionResults] = useState<QuestionResult[]>([]);
+  const [isHighScore, setIsHighScore] = useState(false);
   const { addScore } = useHighScores();
 
   const startGame = (mode: GameMode) => {
@@ -29,11 +30,12 @@ function AppContent() {
     setCurrentScreen('game');
   };
 
-  const endGame = (score: number, questions: number, results: QuestionResult[]) => {
+  const endGame = async (score: number, questions: number, results: QuestionResult[]) => {
     setLastScore(score);
     setTotalQuestions(questions);
     setQuestionResults(results);
-    addScore(score, gameMode);
+    const isNewHigh = await addScore(score, gameMode);
+    setIsHighScore(isNewHigh);
     setCurrentScreen('result');
   };
 
@@ -154,6 +156,7 @@ function AppContent() {
             <ResultScreen
               score={lastScore}
               totalQuestions={totalQuestions}
+              isHighScore={isHighScore}
               onRetry={() => startGame(gameMode)}
               onHome={goHome}
               onReview={showReview}

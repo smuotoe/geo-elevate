@@ -25,18 +25,23 @@ interface GameScreenProps {
 const GAME_DURATION = 60; // seconds for timed modes
 const SPEED_MODE_QUESTIONS = 10; // fixed questions for speed mode
 
-// Time-based scoring for speed mode (logarithmic curve)
+// Time-based scoring for speed mode
 const calculateSpeedScore = (timeMs: number, isCorrect: boolean): number => {
     if (!isCorrect) return 0;
 
-    const timeSec = timeMs / 1000;
-    const baseScore = 100;
-    const maxBonus = 400; // Maximum possible score (5x base)
+    // Account for render latency and reaction time
+    // We subtract 400ms from the time, effectively giving a "free" buffer
+    const RENDER_BUFFER_MS = 400;
+    const adjustedTimeMs = Math.max(0, timeMs - RENDER_BUFFER_MS);
 
-    // Logarithmic decay: score decreases logarithmically as time increases
-    // Formula: baseScore + maxBonus * e^(-timeSec)
-    // This gives exponentially more points for faster answers
-    const bonus = maxBonus * Math.exp(-timeSec);
+    const timeSec = adjustedTimeMs / 1000;
+    const baseScore = 100;
+    const maxBonus = 400;
+
+    // Exponential decay: maxBonus * e^(-0.8 * time)
+    // We use 0.8 coefficient to make the decay slightly less aggressive than 1.0
+    const bonus = maxBonus * Math.exp(-0.8 * timeSec);
+
     const totalScore = baseScore + bonus;
 
     // Round to nearest integer

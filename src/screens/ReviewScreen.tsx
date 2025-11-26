@@ -63,16 +63,16 @@ export const ReviewScreen: React.FC<ReviewScreenProps> = ({ results, onBack }) =
                                     </div>
 
                                     <div className="space-y-1 text-sm">
-                                        {result.mode === 'capitals' ? (
+                                        {result.mode === 'capitals' || result.mode === 'speed' ? (
                                             <>
                                                 <div className="flex items-center">
                                                     <span className="text-elevate-subtext dark:text-elevate-subtext-dark mr-2">Capital:</span>
-                                                    <span className="font-semibold text-elevate-text dark:text-elevate-text-dark">{result.correctAnswer}</span>
+                                                    <span className="font-bold text-green-600 dark:text-green-400">{result.correctAnswer}</span>
                                                 </div>
                                                 {!result.isCorrect && (
-                                                    <div className="flex items-center">
+                                                    <div className="flex items-center text-xs mt-1">
                                                         <span className="text-elevate-subtext dark:text-elevate-subtext-dark mr-2">You answered:</span>
-                                                        <span className="font-semibold text-red-600 dark:text-red-400">{result.userAnswer}</span>
+                                                        <span className="text-elevate-subtext dark:text-elevate-subtext-dark line-through decoration-red-500 decoration-2">{result.userAnswer}</span>
                                                     </div>
                                                 )}
                                             </>
@@ -80,12 +80,12 @@ export const ReviewScreen: React.FC<ReviewScreenProps> = ({ results, onBack }) =
                                             <>
                                                 <div className="flex items-center">
                                                     <span className="text-elevate-subtext dark:text-elevate-subtext-dark mr-2">Correct:</span>
-                                                    <span className="font-semibold text-elevate-text dark:text-elevate-text-dark">{result.correctAnswer}</span>
+                                                    <span className="font-bold text-green-600 dark:text-green-400">{result.correctAnswer}</span>
                                                 </div>
                                                 {!result.isCorrect && (
-                                                    <div className="flex items-center">
+                                                    <div className="flex items-center text-xs mt-1">
                                                         <span className="text-elevate-subtext dark:text-elevate-subtext-dark mr-2">You answered:</span>
-                                                        <span className="font-semibold text-red-600 dark:text-red-400">{result.userAnswer}</span>
+                                                        <span className="text-elevate-subtext dark:text-elevate-subtext-dark line-through decoration-red-500 decoration-2">{result.userAnswer}</span>
                                                     </div>
                                                 )}
                                             </>

@@ -23,7 +23,10 @@ export function useHighScores() {
         }
     }, []);
 
-    const addScore = async (score: number, mode: string) => {
+    const addScore = async (score: number, mode: string): Promise<boolean> => {
+        const currentHighScore = getHighScore(mode);
+        const isNewHighScore = score > currentHighScore;
+
         const newEntry: ScoreEntry = {
             date: new Date().toISOString(),
             score,
@@ -53,6 +56,8 @@ export function useHighScores() {
             localStorage.setItem('geo-elevate-scores', JSON.stringify(newScores));
             return newScores;
         });
+
+        return isNewHighScore;
     };
 
     const getHighScore = (mode: string) => {

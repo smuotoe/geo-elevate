@@ -7,12 +7,13 @@ import { Card } from '../components/ui/Card';
 interface ResultScreenProps {
     score: number;
     totalQuestions: number;
+    isHighScore?: boolean;
     onRetry: () => void;
     onHome: () => void;
     onReview: () => void;
 }
 
-export const ResultScreen: React.FC<ResultScreenProps> = ({ score, totalQuestions, onRetry, onHome, onReview }) => {
+export const ResultScreen: React.FC<ResultScreenProps> = ({ score, totalQuestions, isHighScore, onRetry, onHome, onReview }) => {
     return (
         <div className="flex flex-col h-full max-w-md mx-auto p-6 pt-12 items-center justify-center space-y-8">
 
@@ -31,8 +32,18 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({ score, totalQuestion
                 transition={{ delay: 0.2 }}
                 className="w-full"
             >
-                <Card className="flex flex-col items-center p-8 space-y-4 border-t-4 border-t-elevate-primary dark:border-t-blue-500">
-                    <div className="p-4 bg-blue-50 dark:bg-blue-900/30 rounded-full text-elevate-primary dark:text-blue-400 mb-2">
+                <Card className="flex flex-col items-center p-8 space-y-4 border-t-4 border-t-elevate-primary dark:border-t-blue-500 relative overflow-hidden">
+                    {isHighScore && (
+                        <motion.div
+                            initial={{ y: -50, opacity: 0 }}
+                            animate={{ y: 0, opacity: 1 }}
+                            transition={{ delay: 0.5, type: "spring" }}
+                            className="absolute top-0 right-0 bg-yellow-400 text-yellow-900 text-xs font-bold px-3 py-1 rounded-bl-lg shadow-sm"
+                        >
+                            NEW HIGH SCORE!
+                        </motion.div>
+                    )}
+                    <div className={`p-4 rounded-full mb-2 ${isHighScore ? 'bg-yellow-100 text-yellow-600 dark:bg-yellow-900/30 dark:text-yellow-400' : 'bg-blue-50 dark:bg-blue-900/30 text-elevate-primary dark:text-blue-400'}`}>
                         <Trophy className="w-10 h-10" />
                     </div>
                     <div className="text-center">
